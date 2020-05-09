@@ -40,7 +40,7 @@ def userProfile(request,username):
             posts=getPostImages(user)
             followers=profile.followers
             following=profile.following
-            userImage=profile.diplayPicture
+            userImage=profile.displayPicture
             # creating a dictionary to be passed in render
             data={'username':user.username,
                 'fname':user.first_name,

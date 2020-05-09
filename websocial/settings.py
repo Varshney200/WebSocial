@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -129,4 +129,4 @@ MESSAGE_TAGS = {constants.ERROR : 'danger'}
 
 # setup the directory where all the images uploaded will be stored
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "user_images/")
+MEDIA_ROOT = os.path.join(BASE_DIR, "content/")
