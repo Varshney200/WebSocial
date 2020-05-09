@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+<!-- the USER PROFILE PAGE -->
+
+{% block css %}
+{% comment %}  all css added here {% endcomment %}
+.userImage{
+    width:200px;
+    height:200px;
+    border-radius:50%;
+}
+
+.content{
+    padding-top:2%;
+    padding-left:2%;
+}
+
+.followers{
+    font-family: 'Open Sans', sans-serif;
+}
+hr{
+    border-top:1px solid grey;
+}
+.sz{
+    width:300;
+    height:200;
+    margin-bottom:30px;
+}
+
+{% endblock css %}
+{% block body %}
+<div class="container my-4">
+    <!-- profile information -->
+    <div class="media">
+    <img src="{{userImage.url}}" class="align-self-start mr-3 userImage" alt="...">
+    <div class="media-body content">
+        <h2 class="mt-0" style="font-weight: 300;">{{username}}</h2>
+        <p class="followers"><span><b>{{followers}}</b> followers</span>
+        <span class="ml-3"><b>{{following}}</b> following</span> </p>
+        <h5>{{fname}} {{lname}}</h5>
+        <p><i>{{bio}}</i></p>
+        </div>
+    </div>
+    <hr>
+    <!-- post images -->
+    <div class='row'>
+        {% for i in posts %}
+            {% for post in i %}
+                <div class='col-md-4'>
+                    <img src="{{post.image.url}}" alt="Image" class='sz'>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock body %}
