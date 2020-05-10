@@ -24,21 +24,22 @@ class Profile(models.Model):
         return str(self.user)
 
 class Like(models.Model):
-    user=models.ManyToManyField(User, related_name="likingUser")
-    post=models.OneToOneField(Post, on_delete=models.CASCADE)
-    likes=models.IntegerField(default=0)
-    # class methods are much like static methods , can be accessed by class name as well as object name 
+    user = models.ManyToManyField(User, related_name="liking_user")
+    post = models.OneToOneField(Post, on_delete=models.CASCADE) # class methods are much like static methods , can be accessed by class name as well as object name 
     #the class method is always attached to a class with first argument as the class itself cls.
+
+    # for liking post
     @classmethod
-    def like(cls, post,likingUser):
+    def like(cls, post, likingUser):
         #instead of self we use cls
-        obj, create=cls.objects.get_or_create(post = post)
-        # if an object exists returns(object,false),  else creates an object and returns (object,True)
+        obj, create  = cls.objects.get_or_create(post = post)
         obj.user.add(likingUser)
 
+    # for disliking post
     @classmethod
-    def dislike(cls, post,dislikingUser):
-        obj, create=cls.objects.get_or_create(post = post)
+    def dislike(cls, post, dislikingUser):
+        obj, create  = cls.objects.get_or_create(post = post) # if an object exists returns(object,false),  else creates an object and returns (object,True)
+        
         obj.user.remove(dislikingUser)
 
     def __str__(self):

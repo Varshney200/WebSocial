@@ -27,7 +27,12 @@
             <!-- caption shown in the post -->
             <p class="card-text">{{post.caption}}</p>
             <!-- like comment and repost buttons -->
-            <button class="btn btn-primary mr-4" type="submit">Like</button>
+            <button class="btn btn-primary mr-4 like" id="{{post.id}}">
+            {% if post in likedPost %}
+                <a href="{% url 'likepost' %}" style="color:white;" id="likeText ">Liked</a></button>
+            {% else %}
+                 <a href="{% url 'likepost' %}" style="color:white;" id="likeText">Like</a></button>
+            {% endif %}       
             <button class="btn btn-primary mx-2" type="submit">Comment</button>
             <button class="btn btn-primary mx-4" type="submit">Repost</button>
             <!-- if it is the post of the logged in user only, delete post button -->
@@ -68,5 +73,35 @@
   </div>
 </div>
 {% endblock modals %}
+
+{% block js %}
+<script>
+    //.like is used to access like class 
+    $(".like").click(function (e) {
+        var id = this.id; //loads id of the class, ie of the button(same as that of the post)
+        var href = $('.like').find('a').attr('href');    //get href from the link(attribute href of the anchor(a) tag)
+        console.log(href, id);
+        e.preventDefault();                  //to supress redirect
+             
+        $.ajax({
+            url: href,
+            data: {
+            'likeId': id
+            }, //here we are passing the id to views through ajax rather than in the url as done in delete post
+            success: function(response)
+            {
+                if(response.liked){
+                    $('#'+id).html("Liked");    //#+id to just like the post whose id is specified
+                }
+                else{
+                    $('#'+id).html("Like");
+                }
+            },
+      });
+    });
+
+    
+</script>
+{% endblock js %}
 
  

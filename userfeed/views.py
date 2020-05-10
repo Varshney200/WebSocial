@@ -1,12 +1,23 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Post, Profile
+from .models import Post, Profile, Like
+import json
+
+
 # Create your views here.
 def userHome(request):
     # the feed page
     posts = Post.objects.all().order_by('-pk')
-    data = {'posts':posts}
+    likedPost = []
+    for post in posts:
+        isLiked=Like.objects.filter(post=post,user=request.user)
+        if isLiked:
+            likedPost.append(post)
+    data = {
+        'posts':posts,
+        'likedPost':likedPost
+    }
     return render(request,'userfeed/userfeed.html',data)
 
 def post(request):
@@ -18,6 +29,8 @@ def post(request):
         # making a Post object 
         post_obj = Post(user= puser, caption= pcaption, image=pimage)
         post_obj.save()
+        # likes=Like(post=post,user=puser)
+        # likes.save()
         messages.success(request,"Posted")
         return redirect('/feed')
     else:
@@ -63,3 +76,29 @@ def getPostImages(user):
     # making a list of lists of 3 posts each and returning the list
     imgList= [postObj[i:i+3] for i in range(0, len(postObj), 3)]
     return imgList
+
+def likePost(request):
+    likeId = request.GET.get("likeId", "")
+    post = Post.objects.get(pk=likeId)      #extract post object
+    user = request.user                 #extract user who requested
+    like = Like.objects.filter(post = post, user=user)
+    liked = False
+    if like:
+        Like.dislike(post, user)
+    else:
+        liked = True
+        Like.like(post, user)
+
+    # if like:
+    #     # if like with the same users and post exists, dislike   
+    #     Like.objects.get(post=post).user.remove(user)
+    # else:
+    #     # else like
+    #     liked = True
+    #     Like.objects.get(post=post).user.add(user)
+
+    resp = {
+        'liked':liked
+    }
+    response = json.dumps(resp)
+    return HttpResponse(response, content_type = "application/json")
