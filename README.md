@@ -2,7 +2,7 @@
 WebSocial is a social media platform to post your pictures and interact with others.
 It is a website built using Django Framework in Python.
  It supports the following functionalities right now:
-- User registeration & login
+- User registration & login
 - Creation of post with an image attached to it
 - Deleting a post by the user who posted it
 - Viewing other profiles and their information
